@@ -1,0 +1,6 @@
+numpy
+opencv-python
+matplotlib
+IMDbPY
+mxnet
+nms
