@@ -35,15 +35,16 @@ def get_detector(net, prefix, epoch, data_shape, mean_pixels, ctx, num_class,
         force suppress different categories
     """
     if net is not None:
-        if net.endswith("fcn32s"):
-            net = get_fcn32s_symbol(net.split("_")[0], data_shape, num_classes=num_class, nms_thresh=nms_thresh,
-                force_nms=force_nms, nms_topk=nms_topk)
-        elif net.endswith("fcn16s"):
-            net = get_fcn16s_symbol(net.split("_")[0], data_shape, num_classes=num_class, nms_thresh=nms_thresh,
-                force_nms=force_nms, nms_topk=nms_topk)
-        elif net.endswith("fcn8s"):
-            net = get_fcn8s_symbol(net.split("_")[0], data_shape, num_classes=num_class, nms_thresh=nms_thresh,
-                force_nms=force_nms, nms_topk=nms_topk)
+        print(net,prefix)
+    #     if net.endswith("fcn32s"):
+    #         net = get_fcn32s_symbol(net.split("_")[0], data_shape, num_classes=num_class, nms_thresh=nms_thresh,
+    #             force_nms=force_nms, nms_topk=nms_topk)
+    #     elif net.endswith("fcn16s"):
+    #         net = get_fcn16s_symbol(net.split("_")[0], data_shape, num_classes=num_class, nms_thresh=nms_thresh,
+    #             force_nms=force_nms, nms_topk=nms_topk)
+    #     elif net.endswith("fcn8s"):
+    #         net = get_fcn8s_symbol(net.split("_")[0], data_shape, num_classes=num_class, nms_thresh=nms_thresh,
+    #             force_nms=force_nms, nms_topk=nms_topk)
 
     ############### uncomment the following lines to visualize network ###########################
     # dot = mx.viz.plot_network(net, shape={'data':(1,3,512,1024)})
@@ -127,17 +128,25 @@ if __name__ == '__main__':
 
     network = None if args.deploy_net else args.network
     class_names = parse_class_names(args.class_names)
-    data_shape = None
-    if isinstance(args.data_shape, int):
-        data_shape = 3,args.data_shape,args.data_shape
-    else:
-        data_shape = map(lambda x:int(x),args.data_shape.split(","))
-        assert len(data_shape) == 3 and data_shape[0] == 3
-        
+    # data_shape = None
+    # if isinstance(args.data_shape, int):
+    #     data_shape = 3,args.data_shape,args.data_shape
+    # else:
+    #     data_shape = map(lambda x:int(x),args.data_shape.split(","))
+    #     list_data_shape = list(data_shape)
+    #     assert len(list_data_shape) == 3 and list_data_shape[0] == 3
+
+    data_shape = map(lambda x: int(x), args.data_shape.split(","))
+    list_data_shape = list(data_shape)
+    assert len(list_data_shape) == 3 and list_data_shape[0] == 3
+
+    # prefix = args.prefix + args.network + '_' + str(list_data_shape[1])
     if args.prefix.endswith('_'):
-        prefix = args.prefix + args.network + '_' + str(data_shape[1])
+        prefix = args.prefix + args.network + '_' + str(list_data_shape[1])
     else:
         prefix = args.prefix
+    prefix = prefix.replace('-','_')
+    print(prefix)
 
     # print(network, prefix, args.epoch, data_shape,
     #       (args.mean_r, args.mean_g, args.mean_b),

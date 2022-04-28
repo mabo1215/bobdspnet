@@ -1,6 +1,6 @@
 """Presets for various network configurations"""
 import logging
-import multitask_symbol_builder
+import symbol.multitask_symbol_builder
 
 def get_config(network, data_shape, **kwargs):
     """Configuration factory for various networks
@@ -115,10 +115,10 @@ def get_det_symbol_train(network, data_shape, **kwargs):
     """
     if network.startswith('legacy'):
         logging.warn('Using legacy model.')
-        return multitask_symbol_builder.import_module(network).get_det_symbol_train(**kwargs)
+        return symbol.multitask_symbol_builder.import_module(network).get_det_symbol_train(**kwargs)
     config = get_config(network, data_shape, **kwargs).copy()
     config.update(kwargs)
-    return multitask_symbol_builder.get_det_symbol_train(**config)
+    return symbol.multitask_symbol_builder.get_det_symbol_train(**config)
 
 def get_det_symbol(network, data_shape, **kwargs):
     """Wrapper for get symbol for test
@@ -134,10 +134,10 @@ def get_det_symbol(network, data_shape, **kwargs):
     """
     if network.startswith('legacy'):
         logging.warn('Using legacy model.')
-        return multitask_symbol_builder.import_module(network).get_det_symbol(**kwargs)
+        return symbol.multitask_symbol_builder.import_module(network).get_det_symbol(**kwargs)
     config = get_config(network, data_shape, **kwargs).copy()
     config.update(kwargs)
-    return multitask_symbol_builder.get_det_symbol(**config)
+    return symbol.multitask_symbol_builder.get_det_symbol(**config)
 
 #------------------------------------------------------------------
 # SINGLE TASK: SEGMENTATION

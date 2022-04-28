@@ -1,5 +1,5 @@
 import mxnet as mx
-from common import multi_layer_feature, multibox_layer, multitask_layer
+from symbol.common import multi_layer_feature, multibox_layer, multitask_layer
 from symbol.resnet import residual_unit
 
 eps = 2e-5
